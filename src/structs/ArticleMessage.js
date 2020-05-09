@@ -246,7 +246,7 @@ class ArticleMessage {
     const placeholderAnchors = parsedArticle.listPlaceholderAnchors()
     if (placeholderAnchors) testDetails += `\n\n${placeholderAnchors}`
     if (parsedArticle.tags) testDetails += `\n\n[Tags]: {tags}\n${parsedArticle.tags}`
-    if (this.source.filters) testDetails += `\n\n[Passed Filters?]: ${this.passedFilters ? 'Yes' : 'No'}${this.passedFilters ? filterResults.listMatches(false) + filterResults.listMatches(true) : filterResults.listMatches(true) + filterResults.listMatches(false)}`
+    if (this.source.filters) testDetails += `\n\n[Passed Filters?]: ${this.filterResults.passed ? 'Yes' : 'No'}${this.filterResults.passed ? filterResults.listMatches(false) + filterResults.listMatches(true) : filterResults.listMatches(true) + filterResults.listMatches(false)}`
     testDetails += '```' + footer
 
     return testDetails
