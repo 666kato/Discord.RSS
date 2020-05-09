@@ -363,7 +363,7 @@
       "addSubscriberGlobalSuccess": "Global subscriber {{type}} `{{name}}` successfully added to feed <{{link}}>.",
       "removeGlobalSubscriberExists": "This subscriber is not globally subscribed to the feed <{{link}}>.",
       "removeGlobalSubscriberSuccess": "Successfully removed the global subscription of the {{type}} `{{name}}` from the feed <{{link}}>.",
-      "removeAnySubscriberNone": "There are no subscribers to remove from the feed <{{link}}>.",
+      "removeAnySubscriberNone": "There are no subscribers for the feed <{{link}}>.",
       "invalidRoleOrUser": "That is not a valid role or user. Try again, or type `exit` to cancel.",
       "multipleRoles": "There are multiple roles with that name. Mention the role, type another role/user, or type `exit` to cancel.",
       "selectedRoleDescription": "**Selected**: {{name}}\n**Feed Title:** {{feedTitle}}\n**Feed Link:** {{feedLink}}\n\nSelect an option by typing its number, or type `exit` to cancel.\u200b\n\u200b\n",
