@@ -57,7 +57,7 @@ class FeedFetcher {
     try {
       res = await fetch(url, options)
     } catch (err) {
-      throw new RequestError(err.message)
+      throw new RequestError(null, err.message)
     }
 
     endStatus = res.status

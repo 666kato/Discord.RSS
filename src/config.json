@@ -49,7 +49,9 @@
     "checkDates": true,
     "formatTables": false,
     "toggleRoleMentions": false,
-    "decode": {}
+    "decode": {
+      "https://www.novinite.bg/rss.php": "windows-1251"
+    }
   },
   "advanced": {
     "shards": 2,

@@ -325,7 +325,7 @@ class EmbedSettings extends React.Component {
     const { csrfToken, guildId, feedId } = this.props
     const payload = { ...this.state.embeds[this.state.index] }
     // Convert color to int - manually check null/undefined since it may be 0
-    if (payload.color !== null && payload.color !== undefined) payload.color = +payload.color
+    if (payload.color !== null && payload.color !== undefined && payload.color !== '') payload.color = +payload.color
     // Fix the timestamp from the none value
     if (payload.timestamp === 'none') payload.timestamp = ''
     // Take care of fields

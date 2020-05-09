@@ -8,7 +8,6 @@ const defaultConfigs = require('../util/checkConfig.js').defaultConfigs
 const VALID_PH_IMGS = ['title', 'description', 'summary']
 const VALID_PH_ANCHORS = ['title', 'description', 'summary']
 const BASE_REGEX_PHS = ['title', 'author', 'summary', 'description', 'guid', 'date', 'link']
-const RAW_REGEX_FINDER = new RegExp('{raw:([^{}]+)}', 'g')
 
 function dateHasNoTime (date) { // Determine if the time is T00:00:00.000Z
   const timeParts = [date.getUTCHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds()]
@@ -449,8 +448,9 @@ module.exports = class Article {
   convertRawPlaceholders (content) {
     let result
     const matches = {}
+    const regex = new RegExp('{raw:([^{}]+)}', 'g')
     do {
-      result = RAW_REGEX_FINDER.exec(content)
+      result = regex.exec(content)
       if (!result) continue
       if (!this.flattenedJSON) this.flattenedJSON = new FlattenedJSON(this.raw, this.source, this.encoding)
       const fullMatch = result[0]
@@ -468,7 +468,10 @@ module.exports = class Article {
         matches[fullMatch] = useTimeFallback ? setCurrentTime(localMoment).tz(timezone).format(dateFormat) : localMoment.tz(timezone).format(dateFormat)
       }
     } while (result !== null)
-    for (var phName in matches) content = content.replace(phName, matches[phName])
+    for (var phName in matches) {
+      content = content.replace(new RegExp(escapeRegExp(phName), 'g'), matches[phName])
+
+    }
     return content
   }
 

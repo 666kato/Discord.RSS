@@ -10,7 +10,7 @@ for (const id of config.bot.ownerIDs) {
 }
 
 module.exports = (message, limited) => {
-  if (message.author.bot || !message.guild || storage.blacklistGuilds.includes(message.guild.id) || storage.blacklistUsers.includes(message.author.id)) {
+  if (message.author.id === message.client.user.id || !message.guild || storage.blacklistGuilds.includes(message.guild.id) || storage.blacklistUsers.includes(message.author.id)) {
     return
   }
 

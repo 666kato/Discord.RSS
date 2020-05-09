@@ -231,6 +231,7 @@ function start () {
 
   // Redirect all other routes not handled
   app.get('*', async (req, res) => {
+    // return res.send('The site and the control panel are currently out of service for performance reasons until the next major release (v6). You may check the support discord server for more information. Apologies for any inconvenience.')
     return res
       .type('text/html')
       .send(htmlFile.replace('__OG_TITLE__', DEFAULT_META_TITLE).replace('__OG_DESCRIPTION__', DEFAULT_META_DESCRIPTION))
