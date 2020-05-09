@@ -1,38 +1,69 @@
 const axios = require('axios')
-const moment = require('moment')
 const log = require('../../util/logger.js')
+const WebCache = require('../../models/WebCache.js').model()
 const discordAPIConstants = require('../constants/discordAPI.js')
 const discordAPIHeaders = require('../constants/discordAPIHeaders.js')
-const CACHE_TIME_MINUTES = 10
-const CACHED_USERS = {}
-const CACHED_USERS_GUILDS = {}
 
-function timeDiffMinutes (start) {
-  const duration = moment.duration(moment().diff(start))
-  return duration.asMinutes()
+async function getCachedUser (id) {
+  const cachedUser = await WebCache.findOne({
+    id,
+    type: 'user'
+  }).lean().exec()
+  return cachedUser
+}
+
+async function getCachedUserGuilds (id) {
+  const cachedGuilds = await WebCache.findOne({
+    id,
+    type: 'guilds'
+  }).lean().exec()
+  return cachedGuilds
+}
+
+async function storeCachedUser (id, data) {
+  const found = await WebCache.findOne({
+    id,
+    type: 'user'
+  })
+  if (found) {
+    found.data = data
+    await found.save()
+    return found
+  }
+  const cached = new WebCache({
+    id,
+    type: 'user',
+    data
+  })
+  await cached.save()
+  return cached
+}
+
+async function storeCachedUserGuilds (id, data) {
+  const cached = new WebCache({
+    id,
+    type: 'guilds',
+    data
+  })
+  await cached.save()
+  return cached
 }
 
 async function info (id, accessToken, skipCache) {
-  const cachedUser = id && !skipCache ? CACHED_USERS[id] : null
-  if (cachedUser && timeDiffMinutes(cachedUser.lastUpdated) <= CACHE_TIME_MINUTES) return cachedUser.data
+  const cachedUser = id && !skipCache ? await getCachedUser(id) : null
+  if (cachedUser) return cachedUser.data
   log.web.info(`[1 DISCORD API REQUEST] [USER] GET /api/users/@me`)
   const { data } = await axios.get(`${discordAPIConstants.apiHost}/users/@me`, discordAPIHeaders.user(accessToken))
-  CACHED_USERS[id] = {
-    data,
-    lastUpdated: moment()
-  }
+  await storeCachedUser(data.id, data)
   return data
 }
 
 async function guilds (id, accessToken, skipCache) {
-  const cachedUserGuilds = id && !skipCache ? CACHED_USERS_GUILDS[id] : null
-  if (cachedUserGuilds && timeDiffMinutes(cachedUserGuilds.lastUpdated) <= CACHE_TIME_MINUTES) return cachedUserGuilds.data
+  const cachedUserGuilds = id && !skipCache ? await getCachedUserGuilds(id) : null
+  if (cachedUserGuilds) return cachedUserGuilds.data
   log.web.info(`[1 DISCORD API REQUEST] [USER] GET /api/users/@me/guilds`)
   const { data } = await axios.get(`${discordAPIConstants.apiHost}/users/@me/guilds`, discordAPIHeaders.user(accessToken))
-  CACHED_USERS_GUILDS[id] = {
-    data,
-    lastUpdated: moment()
-  }
+  await storeCachedUserGuilds(id, data)
   return data
 }
 

@@ -182,106 +182,106 @@ class ControlPanel extends React.PureComponent {
       cpResponse: null
     }
 
-    // axios.get('/api/cp').then(({ data, status }) => {
-    //   const { defaultConfig, user, bot, guilds, linksStatus, csrfToken, feedRefreshRates, owner } = data
-    //   state.owner = owner
-    //   state.cpResponse = data
-    //   state.linksStatus = linksStatus
-    //   state.defaultConfig = defaultConfig
-    //   state.user = user
-    //   state.bot = bot
-    //   state.csrfToken = csrfToken
-    //   state.feedRefreshRates = feedRefreshRates
-    //   for (const guildId in guilds) {
-    //     socket.emit('identify', guildId)
-    //     const guild = guilds[guildId]
-    //     const { discord, profile, maxFeeds, roles, channels } = guild
-    //     state.guilds[guildId] = { ...discord }
-    //     state.feeds[guildId] = {}
-    //     state.embeds[guildId] = {}
-    //     state.messages[guildId] = {}
-    //     state.roles[guildId] = {}
-    //     state.channels[guildId] = {}
-    //     state.subscribers[guildId] = {}
-    //     state.filters[guildId] = {}
-    //     state.refreshRates[guildId] = {}
-    //     state.guildLimits[guildId] = maxFeeds
+    axios.get('/api/cp').then(({ data, status }) => {
+      const { defaultConfig, user, bot, guilds, linksStatus, csrfToken, feedRefreshRates, owner } = data
+      state.owner = owner
+      state.cpResponse = data
+      state.linksStatus = linksStatus
+      state.defaultConfig = defaultConfig
+      state.user = user
+      state.bot = bot
+      state.csrfToken = csrfToken
+      state.feedRefreshRates = feedRefreshRates
+      for (const guildId in guilds) {
+        socket.emit('identify', guildId)
+        const guild = guilds[guildId]
+        const { discord, profile, maxFeeds, roles, channels } = guild
+        state.guilds[guildId] = { ...discord }
+        state.feeds[guildId] = {}
+        state.embeds[guildId] = {}
+        state.messages[guildId] = {}
+        state.roles[guildId] = {}
+        state.channels[guildId] = {}
+        state.subscribers[guildId] = {}
+        state.filters[guildId] = {}
+        state.refreshRates[guildId] = {}
+        state.guildLimits[guildId] = maxFeeds
         
-    //     for (const key in profile) {
-    //       if (typeof profile[key] !== 'object') {
-    //         state.guilds[guildId][key] = profile[key]
-    //       }
-    //     }
+        for (const key in profile) {
+          if (typeof profile[key] !== 'object') {
+            state.guilds[guildId][key] = profile[key]
+          }
+        }
 
-    //     if (!localGuildId || localGuildId === guildId) {
-    //       if (!localGuildId) {
-    //         window.localStorage.setItem('guildId', guildId)
-    //         localGuildId = guildId
-    //       }
-    //       state.guildId = guildId
-    //       state.guild = { ...state.guilds[guildId] }
-    //       foundLocalGuildID = true
-    //     }
+        if (!localGuildId || localGuildId === guildId) {
+          if (!localGuildId) {
+            window.localStorage.setItem('guildId', guildId)
+            localGuildId = guildId
+          }
+          state.guildId = guildId
+          state.guild = { ...state.guilds[guildId] }
+          foundLocalGuildID = true
+        }
 
-    //     for (const keyName in profile) {
-    //       const value = profile[keyName]
-    //       if (typeof value !== 'object' && value !== undefined) state.guilds[guildId][keyName] = value
-    //       if (keyName !== 'sources') continue
-    //       const rssList = value
-    //       for (const rssName in rssList) {
-    //         const source = rssList[rssName]
-    //         source.rssName = rssName
-    //         const copy = JSON.parse(JSON.stringify(source))
-    //         if (localGuildId && localGuildId === guildId && (!localFeedId || localFeedId === rssName)) {
-    //           if (!localFeedId) {
-    //             window.localStorage.setItem('feedId', rssName)
-    //             localFeedId = rssName
-    //           }
-    //           state.feedId = rssName
-    //           state.feed = copy
-    //           foundLocalFeedID = true
-    //         }
-    //         state.feeds[guildId][rssName] = copy
-    //         state.embeds[guildId][rssName] = source.embeds
-    //         state.messages[guildId][rssName] = source.message
+        for (const keyName in profile) {
+          const value = profile[keyName]
+          if (typeof value !== 'object' && value !== undefined) state.guilds[guildId][keyName] = value
+          if (keyName !== 'sources') continue
+          const rssList = value
+          for (const rssName in rssList) {
+            const source = rssList[rssName]
+            source.rssName = rssName
+            const copy = JSON.parse(JSON.stringify(source))
+            if (localGuildId && localGuildId === guildId && (!localFeedId || localFeedId === rssName)) {
+              if (!localFeedId) {
+                window.localStorage.setItem('feedId', rssName)
+                localFeedId = rssName
+              }
+              state.feedId = rssName
+              state.feed = copy
+              foundLocalFeedID = true
+            }
+            state.feeds[guildId][rssName] = copy
+            state.embeds[guildId][rssName] = source.embeds
+            state.messages[guildId][rssName] = source.message
 
-    //         // Feed Filters
-    //         if (source.filters) state.filters[guildId][rssName] = source.filters
+            // Feed Filters
+            if (source.filters) state.filters[guildId][rssName] = source.filters
 
-    //         // Feed Subscriptions
-    //         state.subscribers[guildId][rssName] = {}
-    //         if (source.subscribers && source.subscribers.length > 0) {
-    //           for (const subscriber of source.subscribers) {
-    //             state.subscribers[guildId][rssName][subscriber.id] = subscriber
-    //           }
-    //         }
-    //       }
-    //     }
+            // Feed Subscriptions
+            state.subscribers[guildId][rssName] = {}
+            if (source.subscribers && source.subscribers.length > 0) {
+              for (const subscriber of source.subscribers) {
+                state.subscribers[guildId][rssName][subscriber.id] = subscriber
+              }
+            }
+          }
+        }
 
-    //     for (const channel of channels) state.channels[guildId][channel.id] = channel
-    //     for (const role of roles) state.roles[guildId][role.id] = role
-    //   }
-    //   if (!foundLocalFeedID) {
-    //     state.feed = null
-    //     state.feedId = ''
-    //   }
-    //   if (!state.feedId || !foundLocalGuildID) {
-    //     state.guild = null
-    //     state.guildId = ''
-    //   }
-    //   this.props.initializeState(state)
-    //   window.addEventListener("resize", this.updateDimensions)
-    //   this.setState({ loaded: true, loggedOut: false, authenticatingLogin: false })
-    // }).catch(err => {
-    //     const errMessage = err.response && err.response.data && err.response.data.message ? err.response.data.message : err.response && err.response.data ? err.response.data : err.message
-    //     if (err.response && err.response.status === 401) {
-    //       if (err.response.data && err.response.data.code === 9999) this.setState({ errorMessage: errMessage })
-    //       else this.setState({ loggedOut: true })
-    //     } else {
-    //       console.log(err.response || err.message, err)
-    //       this.setState({ errorMessage: errMessage })
-    //     }
-    // })
+        for (const channel of channels) state.channels[guildId][channel.id] = channel
+        for (const role of roles) state.roles[guildId][role.id] = role
+      }
+      if (!foundLocalFeedID) {
+        state.feed = null
+        state.feedId = ''
+      }
+      if (!state.feedId || !foundLocalGuildID) {
+        state.guild = null
+        state.guildId = ''
+      }
+      this.props.initializeState(state)
+      window.addEventListener("resize", this.updateDimensions)
+      this.setState({ loaded: true, loggedOut: false, authenticatingLogin: false })
+    }).catch(err => {
+        const errMessage = err.response && err.response.data && err.response.data.message ? err.response.data.message : err.response && err.response.data ? err.response.data : err.message
+        if (err.response && err.response.status === 401) {
+          if (err.response.data && err.response.data.code === 9999) this.setState({ errorMessage: errMessage })
+          else this.setState({ loggedOut: true })
+        } else {
+          console.log(err.response || err.message, err)
+          this.setState({ errorMessage: errMessage })
+        }
+    })
   }
 
   updateDimensions = () => {
@@ -324,52 +324,53 @@ class ControlPanel extends React.PureComponent {
   }
 
   render () {
-    // if (this.state.errorMessage) 
+    if (this.state.errorMessage) 
     return (
       <EmptyBackground>
         <div>
           <Icon name='x' size='massive' color='red' />
-          <h1>Sorry<br/>The control panel has been temporarily disabled .</h1>
-          <h3>{this.state.errorMessage || 'Your feeds are unaffected. This is only until around mid-May 2020 for performance reasons. Apologies for any inconvenience.'}</h3>
-          <Button basic fluid onClick={e => this.props.history.push('/')}>Home</Button>
-          {/* <br />
-          {!this.state.loggedOut ? <Button basic fluid onClick={e => { window.location.href = '/logout' }} color='red'>Logout</Button> : null} */}
+          {/* <h1>Sorry<br/>The control panel has been temporarily disabled .</h1> */}
+          {/* <h3>{this.state.errorMessage || 'Your feeds are unaffected. This is only until around mid-May 2020 for performance reasons. Apologies for any inconvenience.'}</h3> */}
+          <h3>{this.state.errorMessage}</h3>
+          {/* <Button basic fluid onClick={e => this.props.history.push('/')}>Home</Button> */}
+          <br />
+          {!this.state.loggedOut ? <Button basic fluid onClick={e => { window.location.href = '/logout' }} color='red'>Logout</Button> : null}
           </div>
       </EmptyBackground>
     )
-    // if (!this.state.loaded) {
-    //   if (!this.state.authenticatingLogin && this.state.loggedOut) {
-    //     window.location.href = '/login'
-    //   }
-    //   return (
-    //     // <Dimmer.Dimmable blurring dimmed={!this.state.loaded}>
-    //     <EmptyBackground>
-    //       <Loader inverted active={!this.state.loaded} size='massive'>Loading</Loader>
-    //     </EmptyBackground>
-    //     // </Dimmer.Dimmable>
-    //   )
-    // }
-    // return (
-    //   <div>
-    //     <EmptyBackgroundTransparent visible={this.state.socketStatus === socketStatus.DISCONNECTED}>
-    //       <Icon name='broken chain' size='massive' color='red' />
-    //       <h1>Disconnected from Server</h1>
-    //       <h3>My lifeline to the server has been severed! Access will be restored once my connection has been re-established.</h3>
-    //     </EmptyBackgroundTransparent>
-    //     {/* <DiscordModal onClose={modal.hide} open={this.props.modalOpen} { ...this.props.modal.props }>{this.props.modal.children}</DiscordModal> */}
-    //     <ToastContainer position='top-center' />
-    //     {this.state.leftMenuNotFull
-    //       ? null
-    //       : <TopBar toggleLeftMenu={() => this.setState({ leftMenuExpanded: !this.state.leftMenuExpanded })} socketStatus={this.state.socketStatus} />
-    //     }
-    //     <MainContainer offsetTop={!this.state.leftMenuNotFull}>
-    //       <LeftMenu disableMenuButtonToggle={this.state.leftMenuNotFull} toggleLeftMenu={() => {
-    //         this.setState({ leftMenuExpanded: !this.state.leftMenuExpanded })
-    //       }} socketStatus={this.state.socketStatus} expanded={this.state.leftMenuExpanded} />
-    //       <ContentBody />
-    //     </MainContainer>
-    //   </div>
-    // )
+    if (!this.state.loaded) {
+      if (!this.state.authenticatingLogin && this.state.loggedOut) {
+        window.location.href = '/login'
+      }
+      return (
+        // <Dimmer.Dimmable blurring dimmed={!this.state.loaded}>
+        <EmptyBackground>
+          <Loader inverted active={!this.state.loaded} size='massive'>Loading</Loader>
+        </EmptyBackground>
+        // </Dimmer.Dimmable>
+      )
+    }
+    return (
+      <div>
+        <EmptyBackgroundTransparent visible={this.state.socketStatus === socketStatus.DISCONNECTED}>
+          <Icon name='broken chain' size='massive' color='red' />
+          <h1>Disconnected from Server</h1>
+          <h3>My lifeline to the server has been severed! Access will be restored once my connection has been re-established.</h3>
+        </EmptyBackgroundTransparent>
+        {/* <DiscordModal onClose={modal.hide} open={this.props.modalOpen} { ...this.props.modal.props }>{this.props.modal.children}</DiscordModal> */}
+        <ToastContainer position='top-center' />
+        {this.state.leftMenuNotFull
+          ? null
+          : <TopBar toggleLeftMenu={() => this.setState({ leftMenuExpanded: !this.state.leftMenuExpanded })} socketStatus={this.state.socketStatus} />
+        }
+        <MainContainer offsetTop={!this.state.leftMenuNotFull}>
+          <LeftMenu disableMenuButtonToggle={this.state.leftMenuNotFull} toggleLeftMenu={() => {
+            this.setState({ leftMenuExpanded: !this.state.leftMenuExpanded })
+          }} socketStatus={this.state.socketStatus} expanded={this.state.leftMenuExpanded} />
+          <ContentBody />
+        </MainContainer>
+      </div>
+    )
   }
 }
 
