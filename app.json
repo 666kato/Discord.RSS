@@ -1,8 +1,8 @@
 {
-	"name": "Discord.RSS",
+	"name": "Yotsuba",
 	"description": "Discord RSS bot with customizable feeds",
 	"website": "https://github.com/synzen/Discord.RSS",
-	"logo": "https://discordapp.com/assets/d36b33903dafb0107bb067b55bdd9cbc.svg",
+	"logo": "https://cdn.discordapp.com/avatars/632275664589815828/9e33777abd570c373d70ea3be3bf3dc4.png?size=2048",
 	"keywords": [
 		"discord",
 		"bot",
