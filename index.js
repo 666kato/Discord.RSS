@@ -1,7 +1,7 @@
 const connectDb = require('./src/util/connectDatabase.js')
 const initialize = require('./src/util/initialization.js')
 
-// Models
+
 exports.models = {
   Article: require('./src/models/Article.js'),
   Blacklist: require('./src/models/Blacklist.js'),
